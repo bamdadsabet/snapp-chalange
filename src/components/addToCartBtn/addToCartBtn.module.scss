@@ -1,0 +1,40 @@
+.addToCartBtn {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #333;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: var(--primary);
+  }
+}
+
+.quantityBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: #333;
+  gap: 10px;
+  &:hover {
+    background-color: var(--primary);
+  }
+}
+
+.quantityContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: fit-content;
+}
+
+.displayQuantity {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #757575;
+}
