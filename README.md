@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Snapp E-commerce Project
+
+This is a modern e-commerce application built with Next.js, featuring different rendering strategies for optimal performance and user experience.
+
+## Project Structure
+
+```
+snapp/
+├── src/                    # Source directory
+│   ├── app/               # Next.js 13+ app directory
+│   │   ├── api/          # API routes
+│   │   ├── cart/         # Cart page
+│   │   ├── products/     # Products pages
+│   │   ├── layout.tsx    # Root layout
+│   │   ├── page.tsx      # Home page
+│   │   └── globals.scss  # Global styles
+│   ├── components/       # Reusable React components
+│   ├── services/         # API and service functions
+│   ├── composables/      # Vue-style composables
+│   ├── assets/          # Static assets
+│   ├── types.d.ts       # TypeScript type definitions
+│   └── middleware.ts    # Next.js middleware
+├── public/               # Public static assets
+├── .next/               # Next.js build output
+├── node_modules/        # Dependencies
+├── package.json         # Project dependencies
+├── tsconfig.json        # TypeScript configuration
+├── next.config.ts       # Next.js configuration
+├── .eslintrc.json      # ESLint configuration
+├── .prettierrc         # Prettier configuration
+└── README.md           # Project documentation
+```
+
+## Rendering Strategies
+
+The application utilizes different rendering strategies for different pages to optimize performance and user experience:
+
+### Cart Page (`/cart`)
+
+- **Client-side Rendering (CSR)**
+  - The cart page is fully client-side rendered
+  - This allows for dynamic updates of cart items without page refreshes
+  - Provides immediate feedback for user interactions
+
+### Products Listing Page (`/products`)
+
+- **Hybrid Rendering**
+  - Static page shell with metadata
+  - Product list is client-side rendered
+  - This approach allows for:
+    - Fast initial page load
+    - SEO-friendly metadata
+    - Dynamic product filtering and sorting
+    - Real-time inventory updates
+
+### Product Detail Page (`/products/[id]`)
+
+- **Incremental Static Regeneration (ISR)**
+  - Product metadata is pre-rendered at build time
+  - Pages are regenerated in the background at specified intervals
+  - Product details are fetched client-side
+  - Benefits:
+    - Fast page loads
+    - SEO optimization
+    - Reduced server load
+    - Always up-to-date content
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+2. Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` - Starts the development server
+- `npm run build` - Creates a production build
+- `npm run start` - Runs the production build
+- `npm run lint` - Runs ESLint for code quality
