@@ -30,7 +30,7 @@
 .footerLinkList {
   display: flex;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 2rem;
   @media (max-width: 1024px) {
@@ -97,5 +97,3 @@
     color: white;
   }
 }
-
-

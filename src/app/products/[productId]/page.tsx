@@ -1,15 +1,14 @@
 import { Metadata } from 'next';
 import { ProductService } from '@/services/productService';
 import ProductClient from './_components/productDetail/ProductDetail';
-import { CartProvider } from '@/composables';
 
 // Generate metadata for ISR
 export async function generateMetadata({
   params,
 }: {
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 }): Promise<Metadata> {
-  const productId = params.productId;
+  const productId = (await params).productId;
   const product = await ProductService.getProductById(productId);
 
   if (!product) {
@@ -41,8 +40,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ProductPage({ params }: { params: { productId: string } }) {
-  return (
-      <ProductClient productId={params.productId} />
-  );
+export default async function ProductPage({ params }: { params: Promise<{ productId: string }> }) {
+  const { productId } = await params;
+  return <ProductClient productId={productId} />;
 }

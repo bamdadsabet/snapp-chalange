@@ -1,4 +1,4 @@
-import { IProduct, products } from '@/assets/mockData/products';
+import { products } from '@/assets/mockData/products';
 
 export class ProductService {
   static async getAllProducts(): Promise<IProduct[]> {

@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 
-export async function GET(request: NextRequest, { params }: { params: { imageName: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ imageName: string }> }
+) {
   try {
-    const imageName = params.imageName;
+    const resolvedParams = await params;
+    const imageName = resolvedParams.imageName;
     const imagePath = path.join(process.cwd(), 'src', 'assets', imageName);
 
     // Check if file exists

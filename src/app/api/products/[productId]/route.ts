@@ -3,10 +3,10 @@ import { ProductService } from '@/services';
 
 export async function GET(
   request: Request,
-  { params }: { params: { productId: string } }
+  { params }: { params: Promise<{ productId: string }> }
 ) {
   try {
-    const productId = params.productId;
+    const productId = (await params).productId;
     
     if (!productId || isNaN(Number(productId))) {
       return NextResponse.json(

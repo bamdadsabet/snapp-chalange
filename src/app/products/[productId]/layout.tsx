@@ -4,15 +4,21 @@ import { Metadata } from 'next';
 export async function generateMetadata({
   params,
 }: {
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 }): Promise<Metadata> {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/${params.productId}`,
-      {
-        next: { revalidate: 86400 }, // Revalidate every 24 hours
-      }
-    );
+    const productId = (await params).productId;
+
+    // Add timeout to the fetch request
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${productId}`, {
+      next: { revalidate: 86400 }, // Revalidate every 24 hours
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       return {
@@ -48,7 +54,7 @@ export async function generateMetadata({
         images: [product.image],
       },
       alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${params.productId}`,
+        canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/products/${productId}`,
       },
       other: {
         'product:price:amount': product.price.toString(),
@@ -58,9 +64,10 @@ export async function generateMetadata({
       },
     };
   } catch {
+    // Return fallback metadata if API call fails
     return {
-      title: 'Error',
-      description: 'An error occurred while loading the product.',
+      title: 'Product | Your Store Name',
+      description: 'View product details on our store.',
     };
   }
 }
@@ -68,12 +75,20 @@ export async function generateMetadata({
 // This function generates static params for ISR
 export async function generateStaticParams() {
   try {
+    // Add timeout to the fetch request
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
       next: { revalidate: 24 * 60 * 60 }, // Revalidate every 24 hours
+      signal: controller.signal,
     });
 
+    clearTimeout(timeoutId);
+
     if (!response.ok) {
-      return [];
+      // Return a minimal set of params if API fails
+      return [{ productId: '1' }];
     }
 
     const products = await response.json();
@@ -81,10 +96,12 @@ export async function generateStaticParams() {
       productId: product.id,
     }));
   } catch {
-    return [];
+    // Return a minimal set of params if API fails
+    return [{ productId: '1' }];
   }
 }
 
+// Define the layout component without params
 export default function ProductLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
